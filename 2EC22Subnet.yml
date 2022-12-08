@@ -1,0 +1,236 @@
+Parameters:
+ MyCIDRBlock:
+   Type: String
+   Description: CIDR block
+   Default: 10.0.0.0/16
+ 
+ MyAZ:
+   Type: String
+   Description: availability zone
+   Default: us-east-1a
+ 
+ MyEC2Image:
+   Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+   Description: Image ID
+   Default: /aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-x86_64
+
+ MyEC2InstanceType:
+   Type: String
+   Description: EC2 Instance Type
+   Default: t2.micro
+
+ MyEC2InstanceKeyName:
+   Type: AWS::EC2::KeyPair::KeyName
+   Description: KeyName
+   Default: Linuxkey
+
+ MyEC2InstanceProfileName:
+   Type: String
+   Description: Name of EC2 Instance Profile
+   Default: SSMInstanceProfile
+
+ MyEC2InstanceRoleName:
+   Type: String
+   Description: Name of EC2 Instance Role
+   Default: SSMAllRole
+ 
+ DBInstanceID:
+   Type: String
+   Description: My database instance
+   Default: mydbinstance
+
+ DBName: 
+   Type: String
+   Description: My database
+   Default: mydb
+
+ DBInstanceClass:
+   Type: String
+   Description: DB Instance
+   Default: db.t2.micro
+
+ DBAllocatedStorage:
+   Type: Number
+   Description: The size of the database (GiB)
+   Default: 50
+ 
+ DBUsername:
+   NoEcho: 'true'
+   Description: Username for MySQL database access
+   Type: String
+   MinLength: '1'
+   MaxLength: '16'
+   AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+   ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+ 
+ DBPassword:
+   NoEcho: 'true'
+   Description: Password MySQL database access
+   Type: String
+   MinLength: '8'
+   MaxLength: '41'
+   AllowedPattern: '[a-zA-Z0-9]*'
+   ConstraintDescription: must contain only alphanumeric characters.
+
+Resources:
+ MyVPC:
+  Type: AWS::EC2::VPC
+  Properties: 
+   CidrBlock: !Ref MyCIDRBlock
+   EnableDnsHostnames: true
+   EnableDnsSupport: true
+   InstanceTenancy: default 
+
+ MyVPCSubnet1:
+  Type: AWS::EC2::Subnet
+  Properties: 
+   AvailabilityZone: !Ref MyAZ
+   CidrBlock: !Select [0, !Cidr [!GetAtt MyVPC.CidrBlock,2,8]]
+   MapPublicIpOnLaunch: true
+   VpcId: !Ref MyVPC
+
+ MyVPCDBSubnet1:
+  Type: AWS::EC2::Subnet
+  Properties: 
+   AvailabilityZone: !Ref MyAZ
+   CidrBlock: !Select [1, !Cidr [!GetAtt MyVPC.CidrBlock,2,8]]
+   MapPublicIpOnLaunch: false
+   VpcId: !Ref MyVPC
+
+ MyEC2InstanceKeys:
+  Type: AWS::EC2::KeyPair
+  Properties: 
+   KeyName: !Ref MyEC2InstanceKeyName
+   KeyType: rsa
+  
+ MyEC2InstanceProfile:
+  Type: AWS::IAM::InstanceProfile
+  Properties: 
+   InstanceProfileName: !Ref MyEC2InstanceProfileName
+   Roles: 
+     - !Ref MyEC2InstanceRole
+
+ MyEC2InstanceRole:
+  Type: AWS::IAM::Role
+  Properties: 
+     AssumeRolePolicyDocument: {
+       "Version": "2012-10-17",
+       "Statement": 
+        [
+          {
+             "Effect": "Allow",
+             "Action": 
+              [
+                 "cloudwatch:PutMetricData",
+                 "ds:CreateComputer",
+                 "ds:DescribeDirectories",
+                 "ec2:DescribeInstanceStatus",
+                 "logs:*",
+                 "ssm:*",
+                 "ec2messages:*"
+              ],
+              "Resource": "*"
+          },
+          {
+             "Effect": "Allow",
+             "Action": "iam:CreateServiceLinkedRole",
+             "Resource": "arn:aws:iam::*:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM*",
+             "Condition": 
+              {
+                 "StringLike": 
+                 {
+                   "iam:AWSServiceName": "ssm.amazonaws.com"
+                 }
+              }
+          },
+          {
+             "Effect": "Allow",
+             "Action": 
+              [
+                 "iam:DeleteServiceLinkedRole",
+                 "iam:GetServiceLinkedRoleDeletionStatus"
+              ],
+              "Resource": "arn:aws:iam::*:role/aws-service-role/ssm.amazonaws.com/AWSServiceRoleForAmazonSSM*"
+          },
+          {
+             "Effect": "Allow",
+             "Action": 
+              [
+                 "ssmmessages:CreateControlChannel",
+                 "ssmmessages:CreateDataChannel",
+                 "ssmmessages:OpenControlChannel",
+                 "ssmmessages:OpenDataChannel"
+              ],
+             "Resource": "*"
+          }
+        ]
+      }
+     RoleName: !Ref MyEC2InstanceRoleName
+
+ MyEC2Instance1:
+  Type: AWS::EC2::Instance
+  Properties: 
+   AvailabilityZone: !Ref MyAZ
+   BlockDeviceMappings: 
+   - DeviceName: "/dev/sdm"
+     Ebs: 
+       VolumeType: "io1"
+       Iops: "200"
+       DeleteOnTermination: true
+       VolumeSize: "20"
+   IamInstanceProfile: !Ref MyEC2InstanceProfile
+   ImageId: !Ref MyEC2Image
+   InstanceType: !Ref MyEC2InstanceType
+   KeyName: !Ref MyEC2InstanceKeyName
+   Monitoring: true
+   SecurityGroups: 
+     - !Ref MyEC2SecurityGroup
+   SubnetId: !Ref MyVPCSubnet1
+ 
+ MyEC2SecurityGroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+   GroupDescription: Allow all to public EC2
+   VpcId: !Ref MyVPC
+   SecurityGroupIngress:
+     - IpProtocol: -1
+       FromPort: -1
+       ToPort: -1
+       CidrIp: 0.0.0.0/0
+   SecurityGroupEgress:
+     - IpProtocol: -1
+       FromPort: -1
+       ToPort: -1
+       CidrIp: 0.0.0.0/0
+  
+ MyDBSecurityGroup:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+   GroupDescription: Allow all to public EC2
+   VpcId: !Ref MyVPC
+   SecurityGroupIngress:
+     - IpProtocol: -1
+       FromPort: -1
+       ToPort: 1433
+       CidrIp: !GetAtt MyVPCSubnet1.CidrBlock
+   SecurityGroupEgress:
+     - IpProtocol: -1
+       FromPort: -1
+       ToPort: -1
+       CidrIp: 0.0.0.0/0
+
+ MyDB:
+  Type: 'AWS::RDS::DBInstance'
+  Properties:
+   DBInstanceIdentifier: !Ref DBInstanceID
+   DBName: !Ref DBName
+   DBInstanceClass: !Ref DBInstanceClass
+   AllocatedStorage: !Ref DBAllocatedStorage
+   Engine: MySQL
+   EngineVersion: "8.0.16"
+   MasterUsername: !Ref DBUsername
+   MasterUserPassword: !Ref DBPassword
+   DBSecurityGroups:
+     - !Ref MyDBSecurityGroup
+   MonitoringInterval: 60
+   MonitoringRoleArn: 'arn:aws:iam::123456789012:role/rds-monitoring-role'
