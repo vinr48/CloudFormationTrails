@@ -1,0 +1,113 @@
+Parameters:
+  MyEC2InstanceType: 
+   Type: CommaDelimitedList
+   Description: The allowed types that can be launched
+   Default: "t2.micro, t1.micro"
+   ConstraintDescription: Must be a valid EC2 instance type
+
+  MyEC2AvailabilityZone:
+   Type: CommaDelimitedList
+   Description: The availability zones to lauch EC2 in
+   Default: "ap-southeast-1a,ap-southeast-1b,ap-southeast-1c"
+   ConstraintDescription: Must be a valid AZ
+
+  MyCIDRBlock:
+    Type: String
+    Description: The allocated CIDR range for VPC
+    Default: "10.0.0.0/16"
+  
+  MyEC2Image:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Description: ImageID
+    Default: /aws/service/ami-amazon-linux-latest/al2022-ami-kernel-5.15-arm64
+
+Resources:
+  MyEC2IAMRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: MyEC2IAMPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: '*'
+                Resource: '*'
+  MyEC2InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref MyEC2IAMRole
+  MyNewEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties: 
+     AvailabilityZone: !Select [0, !Ref MyEC2AvailabilityZone] 
+     BlockDeviceMappings: 
+       - DeviceName: /dev/sda2
+         Ebs:
+           VolumeSize: 20
+     IamInstanceProfile: !Ref MyEC2InstanceProfile
+     ImageId: !Ref MyEC2Image
+     InstanceType: !Select [0, !Ref MyEC2InstanceType]
+     Monitoring: true
+     SecurityGroupIds: 
+       - !GetAtt  MyEC2SecurityGroup.GroupId
+  MyEC2NetworkInterface:
+     DependsOn:
+       - MyEC2VPC
+     Type: AWS::EC2::NetworkInterface
+     Properties: 
+       Description: EC2 Network Interface
+       InterfaceType: default
+       SubnetId: !Ref MyEC2Subnet1
+  MyEC2NetworkInterfaceAttachment:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties: 
+       DeviceIndex: "0"
+       InstanceId: !Ref MyNewEC2Instance
+       NetworkInterfaceId: !GetAtt MyEC2NetworkInterface.Id
+  MyEC2VPC:
+     Type: AWS::EC2::VPC
+     Properties: 
+       CidrBlock: !Ref MyCIDRBlock
+       EnableDnsHostnames: true
+       EnableDnsSupport: true
+       InstanceTenancy: default
+  MyEC2Subnet1:
+     Type: AWS::EC2::Subnet
+     Properties:
+       VpcId: !Ref MyEC2VPC
+       CidrBlock: !Select [0,!Cidr [!GetAtt MyEC2VPC.CidrBlock,2,8]]
+  MyEC2Subnet2:
+     Type: AWS::EC2::Subnet
+     Properties:
+       VpcId: !Ref MyEC2VPC
+       CidrBlock: !Select [1,!Cidr [!GetAtt MyEC2VPC.CidrBlock,2,8]]  
+  MyEC2SecurityGroup:  
+     Type: AWS::EC2::SecurityGroup
+     Properties: 
+        GroupDescription: SecurityGroup1
+        GroupName: ECsecGroup1
+        SecurityGroupEgress: 
+           - IpProtocol: Any
+             FromPort: -1
+             ToPort: -1
+             CidrIp: 0.0.0.0/0
+        SecurityGroupIngress: 
+           - IpProtocol: Any
+             FromPort: -1
+             ToPort: -1
+             CidrIp: 0.0.0.0/0
+        VpcId: !Ref MyEC2VPC
+           
