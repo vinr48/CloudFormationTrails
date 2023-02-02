@@ -1,0 +1,392 @@
+#Cloudfront 
+Resources:
+GenoVicCloudFrontDistribution:
+Type: AWS::CloudFront::Distribution
+Properties: 
+  DistributionConfig: 
+    Enabled: True
+    Origins:
+    - DomainName: alfredhealth.genovic.org.au
+      Id: alfredhealth
+      OriginPath: /
+      CustomOriginConfig:
+       HTTPSPort: 443
+       OriginProtoclPolicy: https-only
+    - DomainName: austinhealth.genovic.org.au
+      Id: austinhealth
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: labtec.genovic.org.au
+      Id: labtechealth
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: monashhealth.genovic.org.au
+      Id: monashhealth
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: rmh.genovic.org.au
+      Id: rmh
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: rmhtest.genovic.org.au
+      Id: rmhtest
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: vcgs.genovic.org.au
+      Id: vcgs
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: vcgstest.genovic.org.au
+      Id: vcgstest
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: data.genovic.org.au
+      Id: dataportal
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+    - DomainName: clincial.genovic.org.au
+      Id: clinicalportal
+      OriginPath: /
+      CustomOriginConfig:
+        HTTPSPort: 443
+        OriginProtoclPolicy: https-only
+  CacheBehaviours:
+    - PathPattern: alfredhealth.genovic.com.au
+      TargetOriginId: alfredhealth
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID1
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref Alfredhealthcertificate
+        sslsupportedMethord: sni-only 
+      AWSShield: Standard
+    - PathPattern: austinhealth.genovic.com.au
+      TargetOriginId: austinhealth
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID1
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref Austinhealthcertificate
+        sslsupportedMethord: sni-only
+    - PathPattern: labtec.genovic.com.au
+      TargetOriginId: labtec
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID2
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref labteccertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: monashhealth.genovic.com.au
+      TargetOriginId: monashhealth
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID3
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref monashhealthcertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: monashhealthtest.genovic.com.au
+      TargetOriginId: monashhealthtest
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID4
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref monashhealthtestcertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: rmh.genovic.com.au
+      TargetOriginId: rmh
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID5
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref rmhcertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: rmhtest.genovic.com.au
+      TargetOriginId: rmhtest
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID6
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref rmhtestcertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: vcgs.genovic.com.au
+      TargetOriginId: vcgs
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID7
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref vcgscertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: vcgstest.genovic.com.au
+      TargetOriginId: vcgstest
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID8
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref vcgstestcertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: data.genovic.com.au
+      TargetOriginId: data
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID9
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref datacertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+    - PathPattern: clinical.genovic.com.au
+      TargetOriginId: data
+      ViewerProtocolPolicy: redirect-to-https
+      AllowedMethods: ["GET", "HEAD", "OPTIONS","PUT"]
+      CachedMethods: ["GET", "HEAD"]
+      ForwardedValues:
+      QueryString: true
+      QueryStringBehaviour: whitelist
+      QueryStrings:
+       - AuthClientID10
+      MinTTL: 300
+      ViewerCetificate:
+        ACMcertificateArn: !Ref clinicalcertificate
+        sslsupportedMethord: sni-only
+      AWSShield: Standard
+  Alfredhealthcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: alfredhealth.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.alfredhealth.genovic.com.au'
+      Region: us-east-1
+  Austinhealthcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: austinhealth.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.austinhealth.genovic.com.au'
+      Region: us-east-1
+  Monashhealthcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: monashhealth.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.monashhealth.genovic.com.au'
+      Region: us-east-1
+  Monashhealthtestcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: monashhealthtest.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.monashhealthtest.genovic.com.au'
+      Region: us-east-1
+  rmhcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: rmh.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.rmh.genovic.com.au'
+      Region: us-east-1
+  rmhtestcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: rmhtest.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.rmhtest.genovic.com.au'
+      Region: us-east-1
+  vcgscertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: vcgs.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.vcgs.genovic.com.au' 
+      Region: us-east-1
+  vcgstestcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: vcgstest.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.vcgstest.genovic.com.au'
+      Region: us-east-1
+  datacertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: data.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.data.genovic.com.au'
+      Region: us-east-1
+  cinialcertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: clinical.genovic.com.au
+      SubjectAlternativeNames:
+        - '*.clinical.genovic.com.au'
+      Region: us-east-1
+  GenoVicWaf:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: GenoVic-waf
+      Scope: REGIONAL
+      DefaultAction:
+        Block: {}
+      VisibilityConfig:
+        CloudWatchMetricsEnabled: true
+        MetricName: genovic-waf-metric
+        SampledRequestsEnabled: true
+      Rules:
+      - Name: AWSManagedRulesCommonRuleSet
+        Priority: 1
+        Action:
+          Block: {}
+        OverrideAction:
+          Count: {}
+        VisibilityConfig:
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+        ManagedRuleGroupStatement:
+          VendorName: AWS
+          Name: AWSManagedRulesCommonRuleSet
+      - Name: AWSManagedRulesSQLiRuleSet
+        Priority: 2
+        Action:
+          Block: {}
+        OverrideAction:
+          Count: {}
+        VisibilityConfig:
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+        ManagedRuleGroupStatement:
+          VendorName: AWS
+          Name: AWSManagedRulesSQLiRuleSet
+      - Name: AWSManagedRulesKnownBadInputs
+        Priority: 3
+        Action:
+          Block: {}
+        OverrideAction:
+          Count: {}
+        VisibilityConfig:
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+        ManagedRuleGroupStatement:
+          VendorName: AWS
+          Name: AWSManagedRulesKnownBadInputs
+      - Name: AWSManagedRulesATPRuleSet
+        Priority: 4
+        Action:
+          Block: {}
+        OverrideAction:
+          Count: {}
+        VisibilityConfig:
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+        ManagedRuleGroupStatement:
+          VendorName: AWS
+          Name: AWSManagedRulesATPRuleSet
+      - Name: AWSManagedRulesIPReputationList
+        Priority: 5
+        Action:
+          Block: {}
+        OverrideAction:
+          Count: {}
+        VisibilityConfig:
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+        ManagedRuleGroupStatement:
+          VendorName: AWS
+          Name: AWSManagedRulesIPReputationList
+      - Name: AWSManagedRulesBotControlRuleSet
+        Priority: 5
+        Action:
+          Block: {}
+        OverrideAction:
+          Count: {}
+        VisibilityConfig:
+          SampledRequestsEnabled: true
+          CloudWatchMetricsEnabled: true
+        ManagedRuleGroupStatement:
+          VendorName: AWS
+          Name: AWSManagedRulesBotControlRuleSet
+  GenoVicCloudFrontWebACLAssociation:
+    Type: AWS::CloudFront::DistributionWebACLAssociation
+    Properties:
+      DistributionId: !Ref GenoVicCloudFrontDistribution
+      WebACLId: !Ref GenoVicWAF
