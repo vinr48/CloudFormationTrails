@@ -1,317 +1,317 @@
-esources:
-  GenoVicCloudFrontDistribution:
-    Type: 'AWS::CloudFront::Distribution'
-    Properties:
-      DistributionConfig:
-        Enabled: true
-        Origins:
-          - DomainName: alfredhealth.genovic.org.au
-            Id: alfredhealth
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: austinhealth.genovic.org.au
-            Id: austinhealth
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: labtec.genovic.org.au
-            Id: labtechealth
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: monashhealth.genovic.org.au
-            Id: monashhealth
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: rmh.genovic.org.au
-            Id: rmh
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: rmhtest.genovic.org.au
-            Id: rmhtest
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: vcgs.genovic.org.au
-            Id: vcgs
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: vcgstest.genovic.org.au
-            Id: vcgstest
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: data.genovic.org.au
-            Id: dataportal
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-          - DomainName: clincial.genovic.org.au
-            Id: clinicalportal
-            OriginPath: /
-            CustomOriginConfig:
-              HTTPSPort: 443
-              OriginProtoclPolicy: https-only
-      CacheBehaviours:
-        - PathPattern: alfredhealth.genovic.com.au
-          TargetOriginId: alfredhealth
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+Resources:
+   GenoVicCloudFrontDistribution:
+     Type: 'AWS::CloudFront::Distribution'
+     Properties:
+       DistributionConfig:
+         Enabled: true
+         Origins:
+           - DomainName: alfredhealth.genovic.org.au
+             Id: alfredhealth
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: austinhealth.genovic.org.au
+             Id: austinhealth
+             OriginPath: /
+             CustomOriginConfig:
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+           - DomainName: labtec.genovic.org.au
+             Id: labtechealth
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: monashhealth.genovic.org.au
+             Id: monashhealth
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: rmh.genovic.org.au
+             Id: rmh
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: rmhtest.genovic.org.au
+             Id: rmhtest
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: vcgs.genovic.org.au
+             Id: vcgs
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: vcgstest.genovic.org.au
+             Id: vcgstest
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: data.genovic.org.au
+             Id: dataportal
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+           - DomainName: clincial.genovic.org.au
+             Id: clinicalportal
+             OriginPath: /
+             CustomOriginConfig:
+               HTTPSPort: 443
+               OriginProtocolPolicy: https-only
+       CacheBehaviours:
+         - PathPattern: alfredhealth.genovic.com.au
+           TargetOriginId: alfredhealth
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref alfredhealthcertificate
+           MinTTL: 300
+           ViewerCetificate:
+            ACMCertificateArn: !Ref alfredhealthcertificate
             sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: austinhealth.genovic.com.au
-          TargetOriginId: austinhealth
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+           AWSShield: Standard
+         - PathPattern: austinhealth.genovic.com.au
+           TargetOriginId: austinhealth
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
+           MinTTL: 300
+           ViewerCetificate:
             ACMcertificateArn: !Ref austinhealthcertificate
             sslsupportedMethord: sni-only
-        - PathPattern: labtec.genovic.com.au
-          TargetOriginId: labtec
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+         -  PathPattern: labtec.genovic.com.au
+            TargetOriginId: labtec
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+            CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
+           MinTTL: 300
+           ViewerCetificate:
             ACMcertificateArn: !Ref labteccertificate
             sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: monashhealth.genovic.com.au
-          TargetOriginId: monashhealth
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+           AWSShield: Standard
+         - PathPattern: monashhealth.genovic.com.au
+           TargetOriginId: monashhealth
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref monashhealthcertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: monashhealthtest.genovic.com.au
-          TargetOriginId: monashhealthtest
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-            - PUT
-          CachedMethods:
-            - GET
-            - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref monashhealthtestcertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: rmh.genovic.com.au
-          TargetOriginId: rmh
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref monashhealthcertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: monashhealthtest.genovic.com.au
+           TargetOriginId: monashhealthtest
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref rmhcertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: rmhtest.genovic.com.au
-          TargetOriginId: rmhtest
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-            - PUT
-          CachedMethods:
-            - GET
-            - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref rmhtestcertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: vcgs.genovic.com.au
-          TargetOriginId: vcgs
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref monashhealthtestcertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: rmh.genovic.com.au
+           TargetOriginId: rmh
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref vcgscertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: vcgstest.genovic.com.au
-          TargetOriginId: vcgstest
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-            - PUT
-          CachedMethods:
-            - GET
-            - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref vcgstestcertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: data.genovic.com.au
-          TargetOriginId: data
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref rmhcertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: rmhtest.genovic.com.au
+           TargetOriginId: rmhtest
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref datacertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-        - PathPattern: clinical.genovic.com.au
-          TargetOriginId: data
-          ViewerProtocolPolicy: redirect-to-https
-          AllowedMethods:
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref rmhtestcertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: vcgs.genovic.com.au
+           TargetOriginId: vcgs
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
             - GET
             - HEAD
             - OPTIONS
             - PUT
-          CachedMethods:
+           CachedMethods:
             - GET
             - HEAD
-          MinTTL: 300
-          ViewerCetificate:
-            ACMcertificateArn: !Ref clinicalcertificate
-            sslsupportedMethord: sni-only
-          AWSShield: Standard
-    alfredhealthcertificate:
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref vcgscertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: vcgstest.genovic.com.au
+           TargetOriginId: vcgstest
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+           CachedMethods:
+            - GET
+            - HEAD
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref vcgstestcertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: data.genovic.com.au
+           TargetOriginId: data
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+           CachedMethods:
+            - GET
+            - HEAD
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref datacertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+         - PathPattern: clinical.genovic.com.au
+           TargetOriginId: data
+           ViewerProtocolPolicy: redirect-to-https
+           AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+           CachedMethods:
+            - GET
+            - HEAD
+           MinTTL: 300
+           ViewerCetificate:
+             ACMcertificateArn: !Ref clinicalcertificate
+             sslsupportedMethord: sni-only
+           AWSShield: Standard
+     alfredhealthcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: alfredhealth.genovic.com.au
         SubjectAlternativeNames:
           - '*.alfredhealth.genovic.com.au'
         Region: us-east-1
-    austinhealthcertificate:
+     austinhealthcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: austinhealth.genovic.com.au
         SubjectAlternativeNames:
           - '*.austinhealth.genovic.com.au'
         Region: us-east-1
-    monashhealthcertificate:
+     monashhealthcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: monashhealth.genovic.com.au
         SubjectAlternativeNames:
           - '*.monashhealth.genovic.com.au'
         Region: us-east-1
-    monashhealthtestcertificate:
+     monashhealthtestcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: monashhealthtest.genovic.com.au
         SubjectAlternativeNames:
           - '*.monashhealthtest.genovic.com.au'
         Region: us-east-1
-    rmhcertificate:
+     rmhcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: rmh.genovic.com.au
         SubjectAlternativeNames:
           - '*.rmh.genovic.com.au'
         Region: us-east-1
-    rmhtestcertificate:
+     rmhtestcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: rmhtest.genovic.com.au
         SubjectAlternativeNames:
           - '*.rmhtest.genovic.com.au'
         Region: us-east-1
-    vcgscertificate:
+     vcgscertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: vcgs.genovic.com.au
         SubjectAlternativeNames:
           - '*.vcgs.genovic.com.au'
         Region: us-east-1
-    vcgstestcertificate:
+     vcgstestcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: vcgstest.genovic.com.au
         SubjectAlternativeNames:
           - '*.vcgstest.genovic.com.au'
         Region: us-east-1
-    datacertificate:
+     datacertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: data.genovic.com.au
         SubjectAlternativeNames:
           - '*.data.genovic.com.au'
         Region: us-east-1
-    cinialcertificate:
+     cinialcertificate:
       Type: 'AWS::CertificateManager::Certificate'
       Properties:
         DomainName: clinical.genovic.com.au
         SubjectAlternativeNames:
           - '*.clinical.genovic.com.au'
         Region: us-east-1
-    GenoVicWaf:
+     GenoVicWaf:
       Type: 'AWS::WAFv2::WebACL'
       Properties:
         Name: GenoVic-waf
@@ -395,7 +395,7 @@ esources:
             ManagedRuleGroupStatement:
               VendorName: AWS
               Name: AWSManagedRulesBotControlRuleSet
-    GenoVicCloudFrontWebACLAssociation:
+     GenoVicCloudFrontWebACLAssociation:
       Type: 'AWS::CloudFront::DistributionWebACLAssociation'
       Properties:
         DistributionId: !Ref GenoVicCloudFrontDistribution
