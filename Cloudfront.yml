@@ -1,9 +1,9 @@
 #Cloudfront 
 Resources:
-GenoVicCloudFrontDistribution:
-Type: AWS::CloudFront::Distribution
-Properties: 
-  DistributionConfig: 
+ GenoVicCloudFrontDistribution:
+   Type: AWS::CloudFront::Distribution
+   Properties: 
+    DistributionConfig: 
     Enabled: True
     Origins:
     - DomainName: alfredhealth.genovic.org.au

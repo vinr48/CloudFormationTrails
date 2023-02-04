@@ -101,18 +101,19 @@ Resources:
             TargetOriginId: labtec
             ViewerProtocolPolicy: redirect-to-https
             AllowedMethods:
-            - GET
-            - HEAD
-            - OPTIONS
-            - PUT
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
             CachedMethods:
-            - GET
-            - HEAD
-           MinTTL: 300
-           ViewerCetificate:
-            ACMcertificateArn: !Ref labteccertificate
-            sslsupportedMethord: sni-only
-           AWSShield: Standard
+              - GET
+              - HEAD
+            MinTTL: 
+             - 300
+            ViewerCetificate:
+             ACMcertificateArn: !Ref labteccertificate
+             sslsupportedMethord: sni-only
+            AWSShield: Standard
          - PathPattern: monashhealth.genovic.com.au
            TargetOriginId: monashhealth
            ViewerProtocolPolicy: redirect-to-https
