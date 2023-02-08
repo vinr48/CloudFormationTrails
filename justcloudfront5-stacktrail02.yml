@@ -1,0 +1,27 @@
+Resources:
+#cloudfront code  
+  GenoVicCloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+         - DomainName: !ImportValue arn:aws:elasticloadbalancing:us-east-1:529256887179:loadbalancer/app/my-alb/9892aecf34d07ed5
+           Id: my-alb
+           OriginPath: /
+           CustomOriginConfig:
+             HTTPPort: 80
+             OriginProtocolPolicy: http-only
+        DefaultCacheBehavior: 
+          AllowedMethods: 
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+          CachedMethods: 
+            - GET
+            - HEAD
+          MaxTTL: 300
+          TargetOriginId: my-alb
+          ViewerProtocolPolicy: allow-all
+      DeletionPolicy: Retain 

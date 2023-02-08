@@ -1,0 +1,26 @@
+Resources:
+#cloudfront code  
+  GenoVicCloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+        - DomainName: !
+          Id: my-alb
+          OriginPath: /
+          CustomOriginConfig:
+            HTTPPort: 80
+            OriginProtocolPolicy: http-only
+        DefaultCacheBehavior: 
+          AllowedMethods: 
+            - GET
+            - HEAD
+            - OPTIONS
+            - PUT
+          CachedMethods: 
+            - GET
+            - HEAD
+          MaxTTL: 300
+          TargetOriginId: my-alb
+          ViewerProtocolPolicy: allow-all

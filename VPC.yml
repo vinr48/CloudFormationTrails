@@ -1,0 +1,124 @@
+Parameters:
+   MyCIDRBlock:  
+     Type: String
+     Default: "10.0.0.0/16"
+
+Resources:
+   MyVPC:
+     Type: AWS::EC2::VPC 
+     Properties: 
+       CidrBlock: !Ref MyCIDRBlock
+       EnableDnsHostnames: true
+       EnableDnsSupport: true
+       InstanceTenancy: default
+   
+   MyPublicSubnet1:
+     Type: "AWS::EC2::Subnet"
+     Properties: 
+       AvailabilityZone: !Sub "${AWS::Region}a"
+       CidrBlock: 10.0.1.0/24
+       MapPublicIpOnLaunch: false
+       Tags: 
+         - 
+           Key: "Name"
+           Value: "PubSub01"
+       VpcId: !Ref MyVPC
+   
+   MyPublicSubnet2:
+     Type: "AWS::EC2::Subnet"
+     Properties: 
+       AvailabilityZone: !Sub "${AWS::Region}b"
+       CidrBlock: 10.0.2.0/24
+       MapPublicIpOnLaunch: false
+       Tags: 
+         - 
+           Key: "Name"
+           Value: "PubSub02"
+       VpcId: !Ref MyVPC
+   
+   MyPrivateSubnet1:
+     Type: "AWS::EC2::Subnet"
+     Properties: 
+       AvailabilityZone: !Sub "${AWS::Region}a"
+       CidrBlock: 10.0.3.0/24
+       MapPublicIpOnLaunch: false
+       Tags: 
+         - 
+           Key: "Name"
+           Value: "PriSub01"
+       VpcId: !Ref MyVPC
+
+   MyPrivateSubnet2:
+     Type: "AWS::EC2::Subnet"
+     Properties: 
+       AvailabilityZone: !Sub "${AWS::Region}a"
+       CidrBlock: 10.0.4.0/24
+       MapPublicIpOnLaunch: false
+       Tags: 
+         - 
+           Key: "Name"
+           Value: "PriSub02"
+       VpcId: !Ref MyVPC
+  
+   MyInternetGateway:
+     Type: AWS::EC2::InternetGateway
+     Properties: 
+       Tags: 
+         - 
+           Key: "Name"
+           Value: "My-Internet-Gateway"
+
+   MyEIP:
+     Type: AWS::EC2::EIP
+     Properties:
+       Domain: "vpc"
+
+   MyEIPAssociation:
+      Type: "AWS::EC2::EIPAssociation"
+      Properties:
+       AllocationId: !GetAtt MyEIP.AllocationId
+       NetworkInterfaceId: "eni-0883e6624bf7899cc"
+       PrivateIpAddress: "10.0.1.254"
+
+Outputs:
+  VPCId:
+   Description: VPCId export
+   Value: !Ref MyVPC
+   Export:
+     Name: VPCId
+  
+  CIDRBlockId:
+   Description: VPCCIDRBlock
+   Value: !GetAtt MyVPC.CidrBlock
+   Export:
+     Name: VPCCIDRBlock
+
+  PublicSubnet01Id:
+   Description: PublicSubnet01Id
+   Value: !Ref MyPublicSubnet1
+   Export:
+     Name: PublicSubnet01Id
+
+  PublicSubnet02Id:
+   Description: PublicSubnet02Id
+   Value: !Ref MyPublicSubnet2
+   Export:
+      Name: PublicSubnet02Id
+
+  PrivateSubnet01Id:
+    Description: PrivateSubnet01Id
+    Value: !Ref MyPrivateSubnet1
+    Export:
+      Name: PrivateSubnet01Id
+
+  PrivateSubnet02Id:
+    Description: PrivateSubnet02Id
+    Value: !Ref MyPrivateSubnet2
+    Export:
+      Name: PrivateSubnet02Id
+  
+  InternetGatewayId:
+    Description: InternetGatewayId
+    Value: !GetAtt  MyInternetGatewayz;p
+    Export:
+      Name: InternetGatewayId01
