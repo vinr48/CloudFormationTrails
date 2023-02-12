@@ -19,8 +19,8 @@ Resources:
            - Effect: Allow  
              Action: 
              - 'cloudformation:Describe*'
-             - 'cloudfromation:List:*'
-             - 'cloudformation:Get:*'
+             - 'cloudfromation:List*'
+             - 'cloudformation:Get*'
              Resource: '*'
     Tags: 
      - Key: Environment
