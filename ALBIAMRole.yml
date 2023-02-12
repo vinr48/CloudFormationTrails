@@ -1,0 +1,32 @@
+Resources: 
+ ALBIAMRole:
+   Type: AWS::IAM::Role
+   Properties: 
+    AssumeRolePolicyDocument: 
+      Version: "2012-10-17"
+      Statement:
+       - Effect: Allow
+         Principal:
+           AWS: 'arn:aws:iam::462592154481:root'
+         Action:
+         - 'sts:AssumeRole'
+    Description: Trust Policy for GOS account to access ALB account
+    Policies:
+     - PolicyName: CrossAccountPolicyFroGOSAccount 
+       PolicyDocument:
+         Version: 2012-10-17
+         Statement: 
+           - Effect: Allow  
+             Action: 
+             - 'cloudformation:Describe*'
+             - 'cloudfromation:List:*'
+             - 'cloudformation:Get:*'
+             Resource: '*'
+    Tags: 
+     - Key: Environment
+       Value: ALB Account Cross Account Role 
+
+
+
+     
+   
