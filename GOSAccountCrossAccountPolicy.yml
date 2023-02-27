@@ -15,4 +15,22 @@ Resources:
       ManagedPolicyArns:
         - !Ref MyNewPolicy
  
+ AllUsers:
+    Type: "AWS::IAM::User"
+    Properties:
+      Path: "/"
+      UserName: "AllUsers"
+
+ MyIAMGroupMembership:
+    Type: "AWS::IAM::UserToGroupAddition"
+    Properties:
+      GroupName: !Ref MyNewGroup
+      Users:
+        !Split
+          - ","
+          - !Join
+            - ","
+            - - "arn:aws:iam::"
+              - !Ref "AWS::AccountId"
+              - ":user/*"
 
