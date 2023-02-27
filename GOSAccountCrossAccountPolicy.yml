@@ -28,9 +28,5 @@ Resources:
       Users:
         !Split
           - ","
-          - !Join
-            - ","
-            - - "arn:aws:iam::"
-              - !Ref "AWS::AccountId"
-              - ":user/*"
+          - !Sub "arn::aws::iam::${AWS::AccountId}-root:user/*"
 
