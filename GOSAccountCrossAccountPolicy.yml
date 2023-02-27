@@ -1,0 +1,18 @@
+Resources:
+ MyNewPolicy: 
+   Type: AWS::IAM::ManagedPolicy
+   Properties: 
+     PolicyDocument: 
+       Version: 2012-10-17
+       Statement:
+         - Effect: Allow
+           Action: sts:AssumeRole
+           Resource: arn:aws:iam::462592154481:role/ALBIAMRoletry2-ALBIAMRole-1CPA9XAD3GMJV
+  
+ MyNewGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      ManagedPolicyArns:
+        - !Ref MyNewPolicy
+ 
+
