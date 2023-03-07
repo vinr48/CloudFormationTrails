@@ -30,7 +30,7 @@ Resources:
     Type: 'AWS::WAFv2::WebACL'
     Properties:
       Name: GenoVic-waf
-      Scope: CLOUDFRONT
+      Scope: REGIONAL
       DefaultAction:
           Block: {}
       VisibilityConfig:
