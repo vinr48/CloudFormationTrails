@@ -1,15 +1,40 @@
+Parameters:
+  ALB1domainName:
+    Type: String 
+
+  ALB2domainName:
+    Type: String
+
+
+  AcmCertificateArn:
+    Type: String
+
+
 Resources:
-  GenoVicCloudFrontDistribution:
+  MyCloudFrontDistribution:
     Type: 'AWS::CloudFront::Distribution'
     Properties:
       DistributionConfig:
         Enabled: true
         Origins:
         - DomainName: !ImportValue genovic-gos-devdaniel-ApiGatewayDnsName
-          Id: testalb
+          Id: testapigwy
           CustomOriginConfig:
             HTTPSPort: 443
             OriginProtocolPolicy: https-only
+        - DomainName: !Ref ALB1domainName
+          Id: testalb1
+          CustomOriginConfig:
+            HTTPSPort: 443
+            OriginProtocolPolicy: https-only
+        - DomainName: !Ref ALB2domainName
+          Id: testalb2
+          CustomOriginConfig:
+            HTTPSPort: 443
+            OriginProtocolPolicy: https-only
+          OriginShield:
+            Enabled: True 
+            OriginShieldRegion: ap-southeast-2
         DefaultCacheBehavior: 
           AllowedMethods: 
             - GET
@@ -22,103 +47,17 @@ Resources:
           MaxTTL: 300
           ForwardedValues:
              QueryString: true
-          TargetOriginId: testalb
+          TargetOriginId: testapigwy
           ViewerProtocolPolicy: allow-all
-        WebACLId: !Ref GenoVicWaf
-  #WAF Code      
-  GenoVicWaf:
-    Type: 'AWS::WAFv2::WebACL'
-    Properties:
-      Name: GenoVic-waf
-      Scope: CLOUDFRONT
-      DefaultAction:
-          Block: {}
-      VisibilityConfig:
-        CloudWatchMetricsEnabled: true
-        MetricName: genovic-waf-metric
-        SampledRequestsEnabled: true
-      Rules:
-      - Name: AWSManagedRulesCommonRuleSet
-        Statement:
-          ManagedRuleGroupStatement: 
-           VendorName: AWS
-           Name: CommonRuleSet    
-        Priority: 1
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: CommonRuleSetMetric    
-      - Name: AWSManagedRulesSQLiRuleSet
-        Statement:
-         ManagedRuleGroupStatement:
-           VendorName: AWS
-           Name: SQLiRuleSet
-        Priority: 2
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: SQLiMteric
-      - Name: AWSManagedRulesKnownBadInputs
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: BadInputSet
-            VendorName: AWS
-        Priority: 3
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: BadInputMetric
-      - Name: AWSManagedRulesATPRuleSet
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: ATPRuleSet
-            VendorName: AWS
-        Priority: 4
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: ATPRuleSetMetric
-      - Name: AWSManagedRulesIPReputationList
-        Priority: 5
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: IPReputationListSet
-            VendorName: AWS
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: IPReputationListMetric
-      - Name: AWSManagedRulesBotControlRuleSet
-        Priority: 6
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: BotControlSet
-            VendorName: AWS
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: BotContolSetMetric  
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
+        Restrictions:
+          GeoRestriction:
+            Locations:
+              - "AU"
+            RestrictionType: whitelist
+        
+        
+  

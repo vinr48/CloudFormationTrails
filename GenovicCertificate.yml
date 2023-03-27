@@ -1,0 +1,18 @@
+Parameters:
+  DomainName1:
+    Type: String
+    Default: gosdaniel.sandbox-external.genovic.org.au
+
+
+Resources:
+  GenoVicCertificate:
+    Type: 'AWS::CertificateManager::Certificate'
+    Properties:
+      DomainName: !Ref DomainName1
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName1
+          ValidationDomain: !Ref DomainName1
+      ValidationMethod: DNS
+      SubjectAlternativeNames:
+        - deloi-LoadB-1EF0QWBOSDTUS-738224338.ap-southeast-2.elb.amazonaws.com
+        - cds-p-LoadB-55RCN4K3HDB2-15316099.ap-southeast-2.elb.amazonaws.com

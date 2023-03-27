@@ -1,0 +1,15 @@
+Parameters:
+  DetectrID:
+    Type: String
+  InviteID:
+    Type: String
+  MastrID:
+    Type: String
+
+Resources:
+  GuardDutyMaster:
+    Type: AWS::GuardDuty::Master
+    Properties: 
+      DetectorId: !Ref DetectrID
+      InvitationId: !Ref InviteID
+      MasterId: !Ref MastrID

@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  GuardDutyDetector:
+    Type: 'AWS::GuardDuty::Detector'
+    Properties:
+      Enable: true
+      DataSources:
+         MalwareProtection: 
+          ScanEc2InstanceWithFindings: 
+            EbsVolumes: true
+         S3Logs:
+           Enable: true
+      FindingPublishingFrequency: FIFTEEN_MINUTES
+      
