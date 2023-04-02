@@ -46,7 +46,26 @@ Resources:
           MaxTTL: 300
           TargetOriginId: testapigwy
           ViewerProtocolPolicy: allow-all
-          CachePolicyId: !Ref GenoVicCFCacheConfig
+          CachePolicyId: !Ref GenoVicCFCacheConfig1
+        CacheBehaviors:
+          - Compress: false
+            DefaultTTL: 100
+            MaxTTL: 300
+            MinTTL: 100
+            PathPattern: /deloitte.labtec.genovic.org.au/*
+            SmoothStreaming: false
+            TargetOriginId: testalb1
+            ViewerProtocolPolicy: allow-all
+            CachePolicyId: !Ref GenoVicCFCacheConfig1
+          - Compress: false
+            DefaultTTL: 100
+            MaxTTL: 300
+            MinTTL: 100
+            PathPattern: /cslb
+            SmoothStreaming: false
+            TargetOriginId: testalb2
+            ViewerProtocolPolicy: allow-all
+            CachePolicyId: !Ref GenoVicCFCacheConfig1
         ViewerCertificate:
           AcmCertificateArn: !Ref AcmCertificateArn
           MinimumProtocolVersion: TLSv1.2_2021
@@ -56,7 +75,7 @@ Resources:
             Locations:
               - "AU"
             RestrictionType: whitelist
-  GenoVicCFCacheConfig:
+  GenoVicCFCacheConfig1:
     Type: AWS::CloudFront::CachePolicy
     Properties:
       CachePolicyConfig:
