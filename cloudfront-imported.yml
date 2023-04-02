@@ -12,6 +12,9 @@ Resources:
     Properties:
       DistributionConfig:
         Enabled: true
+        Aliases: 
+          - deloitte.labtec.genovic.org.au
+          - gosdaniel.sandbox-external.genovic.org.au
         Origins:
         - DomainName: !ImportValue genovic-gos-devdaniel-ApiGatewayDnsName
           Id: testapigwy
