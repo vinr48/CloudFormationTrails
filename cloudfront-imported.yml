@@ -1,14 +1,10 @@
 Parameters:
   ALB1domainName:
     Type: String 
-
   ALB2domainName:
     Type: String
-
-
   AcmCertificateArn:
     Type: String
-
 
 Resources:
   MyCloudFrontDistribution:
@@ -45,10 +41,9 @@ Resources:
           MinTTL: 100
           DefaultTTL: 100
           MaxTTL: 300
-          ForwardedValues:
-             QueryString: true
           TargetOriginId: testapigwy
           ViewerProtocolPolicy: allow-all
+          CachePolicyId: !Ref GenoVicCFCacheConfig
         ViewerCertificate:
           AcmCertificateArn: !Ref AcmCertificateArn
           MinimumProtocolVersion: TLSv1.2_2021
@@ -58,6 +53,25 @@ Resources:
             Locations:
               - "AU"
             RestrictionType: whitelist
+  GenoVicCFCacheConfig:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        DefaultTTL: 100
+        MaxTTL: 300
+        MinTTL: 100
+        Name: GenoVicCFCache
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: none
+          EnableAcceptEncodingBrotli: false
+          EnableAcceptEncodingGzip: false
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - Origin
+          QueryStringsConfig:
+            QueryStringBehavior: none
         
         
   

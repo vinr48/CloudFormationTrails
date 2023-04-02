@@ -24,96 +24,24 @@ Resources:
              QueryString: true
           TargetOriginId: testalb
           ViewerProtocolPolicy: allow-all
-        WebACLId: !GetAtt MyWaf 
-  #WAF Code      
-  MyWaf:
-    Type: 'AWS::WAFv2::WebACL'
+          CachePolicyId: !Ref GenoVicCFCacheConfig
+  
+  GenoVicCFCacheConfig:
+    Type: AWS::CloudFront::CachePolicy
     Properties:
-      Name: My-waf
-      Scope: CLOUDFRONT
-      DefaultAction:
-        Block: {}
-      VisibilityConfig:
-        CloudWatchMetricsEnabled: true
-        MetricName: my-waf-metric
-        SampledRequestsEnabled: true
-      Rules:
-        - Name: CommonRuleSet
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesCommonRuleSet
-          Priority: 0
-          OverrideAction:
-            Count: {}
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: CommonRuleSetMetric
-        - Name: AWSManagedRulesSQLiRuleSet
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesSQLiRuleSet
-          Priority: 1
-          OverrideAction:
-            Count: {}
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: AWSManagedRulesSQLiRuleSetMetric
-        - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
-          Priority: 2
-          OverrideAction:
-            Count: {}
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: MetricForAMRKnownBadInputs
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesKnownBadInputsRuleSet
-        - Name: AWS-AWSManagedRulesATPRuleSet
-          Priority: 3
-          OverrideAction:
-            Count: {}
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: MetricForAWSManagedRulesATPRuleSet
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesATPRuleSet
-              ManagedRuleGroupConfigs:
-                - LoginPath: /api/accounts/login
-                - PayloadType: JSON
-                - PasswordField:
-                    Identifier: /form/password
-                - UsernameField:
-                    Identifier: /form/username
-        - Name: AWS-AWSManagedRulesAmazonIpReputationList
-          Priority: 4
-          OverrideAction:
-            Count: {}
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: MetricForAWSManagedRulesAmazonIpReputationList
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesAmazonIpReputationList
-        - Name: AWS-AWSManagedRulesBotControlRuleSet
-          Priority: 5
-          OverrideAction:
-            Count: {}
-          VisibilityConfig:
-            SampledRequestsEnabled: true
-            CloudWatchMetricsEnabled: true
-            MetricName: MetricForAWSManagedRulesBotControlRuleSet
-          Statement:
-            ManagedRuleGroupStatement:
-              VendorName: AWS
-              Name: AWSManagedRulesBotControlRuleSet
+      CachePolicyConfig:
+        DefaultTTL: 100
+        MaxTTL: 300
+        MinTTL: 100
+        Name: GenoVicCFCache
+        ParametersInCacheKeyAndForwardedToOrigin:
+          CookiesConfig:
+            CookieBehavior: none
+          EnableAcceptEncodingBrotli: false
+          EnableAcceptEncodingGzip: false
+          HeadersConfig:
+            HeaderBehavior: whitelist
+            Headers:
+              - Origin
+          QueryStringsConfig:
+            QueryStringBehavior: none
