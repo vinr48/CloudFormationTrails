@@ -1,0 +1,45 @@
+Parameters:
+  AcmCertificateArn:
+    Type: String
+
+Resources:
+  GenoVicCloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Origins:
+        - DomainName: !ImportValue genovic-gos-devdaniel-ApiGatewayDnsName
+          Id: testapigwy
+          CustomOriginConfig:
+            HTTPSPort: 443
+            OriginProtocolPolicy: https-only
+        DefaultCacheBehavior: 
+          AllowedMethods: 
+            - GET
+            - HEAD
+            - PUT 
+            - OPTIONS
+            - PATCH
+            - DELETE 
+          CachedMethods: 
+            - GET
+            - HEAD
+          MinTTL: 100
+          DefaultTTL: 100
+          MaxTTL: 300
+          ForwardedValues:
+             QueryString: false
+             Cookies:
+               Forward: all 
+          TargetOriginId: testapigwy
+          ViewerProtocolPolicy: allow-all
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
+        Restrictions:
+          GeoRestriction:
+            Locations:
+              - "AU"
+            RestrictionType: whitelist 
