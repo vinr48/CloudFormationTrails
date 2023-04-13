@@ -1,9 +1,9 @@
 Parameters:
-  ALB1domainName:
+  ALBdomainName:
     Type: String 
-  ALB2domainName:
-    Type: String
   AcmCertificateArn:
+    Type: String
+  Aliases:
     Type: String
 
 Resources:
@@ -13,21 +13,10 @@ Resources:
       DistributionConfig:
         Enabled: true
         Aliases: 
-          - deloitte.labtec.genovic.org.au
-          - gosdaniel.sandbox-external.genovic.org.au
+          - !Ref Aliases
         Origins:
-        - DomainName: !ImportValue genovic-gos-devdaniel-ApiGatewayDnsName
-          Id: testapigwy
-          CustomOriginConfig:
-            HTTPSPort: 443
-            OriginProtocolPolicy: https-only
-        - DomainName: !Ref ALB1domainName
+        - DomainName: !Ref ALBdomainName
           Id: testalb1
-          CustomOriginConfig:
-            HTTPSPort: 443
-            OriginProtocolPolicy: https-only
-        - DomainName: !Ref ALB2domainName
-          Id: testalb2
           CustomOriginConfig:
             HTTPSPort: 443
             OriginProtocolPolicy: https-only

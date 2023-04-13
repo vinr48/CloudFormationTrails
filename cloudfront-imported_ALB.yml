@@ -1,0 +1,55 @@
+Parameters:
+  ALBdomainName:
+    Type: String 
+  AcmCertificateArn:
+    Type: String
+  Aliases:
+    Type: String
+
+Resources:
+  MyCloudFrontDistribution:
+    Type: 'AWS::CloudFront::Distribution'
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Aliases: 
+          - !Ref Aliases
+        Origins:
+        - DomainName: !Ref ALBdomainName
+          Id: testalb1
+          CustomOriginConfig:
+            HTTPSPort: 443
+            OriginProtocolPolicy: https-only
+        DefaultCacheBehavior: 
+          AllowedMethods: 
+            - GET
+            - HEAD
+            - POST
+            - PUT 
+            - OPTIONS 
+            - PATCH 
+            - DELETE 
+          CachedMethods: 
+            - GET
+            - HEAD
+          MinTTL: 100
+          DefaultTTL: 100
+          MaxTTL: 300
+          TargetOriginId: testalb1
+          ViewerProtocolPolicy: allow-all
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: all
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          MinimumProtocolVersion: TLSv1.2_2021
+          SslSupportMethod: sni-only
+        Restrictions:
+          GeoRestriction:
+            Locations:
+              - "AU"
+            RestrictionType: whitelist 
+        
+        
+  
