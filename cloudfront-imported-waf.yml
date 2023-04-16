@@ -1,124 +1,105 @@
+#WAF Code      
 Resources:
-  GenoVicCloudFrontDistribution:
-    Type: 'AWS::CloudFront::Distribution'
-    Properties:
-      DistributionConfig:
-        Enabled: true
-        Origins:
-        - DomainName: !ImportValue genovic-gos-devdaniel-ApiGatewayDnsName
-          Id: testalb
-          CustomOriginConfig:
-            HTTPSPort: 443
-            OriginProtocolPolicy: https-only
-        DefaultCacheBehavior: 
-          AllowedMethods: 
-            - GET
-            - HEAD
-          CachedMethods: 
-            - GET
-            - HEAD
-          MinTTL: 100
-          DefaultTTL: 100
-          MaxTTL: 300
-          ForwardedValues:
-             QueryString: true
-          TargetOriginId: testalb
-          ViewerProtocolPolicy: allow-all
-        WebACLId: !Ref GenoVicWaf
-  #WAF Code      
-  GenoVicWaf:
+  MyWaf:
     Type: 'AWS::WAFv2::WebACL'
     Properties:
-      Name: GenoVic-waf
+      Name: My-waf
       Scope: CLOUDFRONT
       DefaultAction:
-          Block: {}
+        Block: {}
       VisibilityConfig:
         CloudWatchMetricsEnabled: true
-        MetricName: genovic-waf-metric
+        MetricName: my-waf-metric
         SampledRequestsEnabled: true
       Rules:
-      - Name: AWSManagedRulesCommonRuleSet
-        Statement:
-          ManagedRuleGroupStatement: 
-           VendorName: AWS
-           Name: CommonRuleSet    
-        Priority: 1
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: CommonRuleSetMetric    
-      - Name: AWSManagedRulesSQLiRuleSet
-        Statement:
-         ManagedRuleGroupStatement:
-           VendorName: AWS
-           Name: SQLiRuleSet
-        Priority: 2
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: SQLiMteric
-      - Name: AWSManagedRulesKnownBadInputs
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: BadInputSet
-            VendorName: AWS
-        Priority: 3
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: BadInputMetric
-      - Name: AWSManagedRulesATPRuleSet
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: ATPRuleSet
-            VendorName: AWS
-        Priority: 4
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: ATPRuleSetMetric
-      - Name: AWSManagedRulesIPReputationList
-        Priority: 5
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: IPReputationListSet
-            VendorName: AWS
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: IPReputationListMetric
-      - Name: AWSManagedRulesBotControlRuleSet
-        Priority: 6
-        Statement:
-          ManagedRuleGroupStatement:
-            Name: BotControlSet
-            VendorName: AWS
-        Action:
-          Block: {}
-        OverrideAction:
-          Count: {}
-        VisibilityConfig:
-          SampledRequestsEnabled: true
-          CloudWatchMetricsEnabled: true
-          MetricName: BotContolSetMetric  
+        - Name: CommonRuleSet
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesCommonRuleSet
+          Priority: 0
+          OverrideAction:
+            Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: CommonRuleSetMetric
+        - Name: AWSManagedRulesSQLiRuleSet
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesSQLiRuleSet
+          Priority: 1
+          OverrideAction:
+            Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: AWSManagedRulesSQLiRuleSetMetric
+        - Name: AWS-AWSManagedRulesKnownBadInputsRuleSet
+          Priority: 2
+          OverrideAction:
+            Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAMRKnownBadInputs
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesKnownBadInputsRuleSet
+        - Name: AWS-AWSManagedRulesATPRuleSet
+          Priority: 3
+          OverrideAction:
+            Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAWSManagedRulesATPRuleSet
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesATPRuleSet
+              ManagedRuleGroupConfigs:
+                - LoginPath: /api/accounts/login
+                - PayloadType: JSON
+                - PasswordField:
+                    Identifier: /form/password
+                - UsernameField:
+                    Identifier: /form/username
+        - Name: AWS-AWSManagedRulesAmazonIpReputationList
+          Priority: 4
+          OverrideAction:
+            Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAWSManagedRulesAmazonIpReputationList
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesAmazonIpReputationList
+        - Name: AWS-AWSManagedRulesBotControlRuleSet
+          Priority: 5
+          OverrideAction:
+            Count: {}
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: MetricForAWSManagedRulesBotControlRuleSet
+          Statement:
+            ManagedRuleGroupStatement:
+              VendorName: AWS
+              Name: AWSManagedRulesBotControlRuleSet
+        
+        
+
+
+Outputs:
+  GenoWebACLId:
+    Description: My WAF WebACL ID
+    Value: !Ref MyWaf
+    Export:
+      Name: my-web-aclid
+  
+
