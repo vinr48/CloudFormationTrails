@@ -1,6 +1,10 @@
 Parameters:
   AcmCertificateArn:
     Type: String
+  Aliases:
+    Type: String
+  APIDomainName: 
+    Type: String
 
 Resources:
   GenoVicCloudFrontDistribution:
@@ -8,8 +12,10 @@ Resources:
     Properties:
       DistributionConfig:
         Enabled: true
+        Aliases:
+          - !Ref Aliases
         Origins:
-        - DomainName: !ImportValue genovic-gos-devdaniel-ApiGatewayDnsName
+        - DomainName: !Ref APIDomainName
           Id: testapigwy
           CustomOriginConfig:
             HTTPSPort: 443
@@ -18,10 +24,11 @@ Resources:
           AllowedMethods: 
             - GET
             - HEAD
-            - PUT 
+            - POST
             - OPTIONS
             - PATCH
             - DELETE 
+            - PUT
           CachedMethods: 
             - GET
             - HEAD
