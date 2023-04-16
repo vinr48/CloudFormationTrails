@@ -5,6 +5,8 @@ Parameters:
     Type: String
   APIDomainName: 
     Type: String
+  APILoggingBucket:
+    Type: String
 
 Resources:
   GenoVicCloudFrontDistribution:
@@ -41,6 +43,10 @@ Resources:
                Forward: all 
           TargetOriginId: testapigwy
           ViewerProtocolPolicy: allow-all
+        Logging:
+          Bucket: !Ref APILoggingBucket
+          IncludeCookies: false
+          Prefix: Cloudfront-APIGWY/
         ViewerCertificate:
           AcmCertificateArn: !Ref AcmCertificateArn
           MinimumProtocolVersion: TLSv1.2_2021

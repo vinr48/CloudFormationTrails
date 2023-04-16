@@ -5,6 +5,8 @@ Parameters:
     Type: String
   Aliases:
     Type: String
+  ALBLoggingBucket:
+    Type: String
 
 Resources:
   MyCloudFrontDistribution:
@@ -41,6 +43,10 @@ Resources:
             QueryString: false
             Cookies:
               Forward: all
+        Logging:
+          Bucket: !Ref ALBLoggingBucket
+          IncludeCookies: false
+          Prefix: Cloudfront-ALB/
         ViewerCertificate:
           AcmCertificateArn: !Ref AcmCertificateArn
           MinimumProtocolVersion: TLSv1.2_2021
