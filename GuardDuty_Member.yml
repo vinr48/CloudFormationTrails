@@ -4,18 +4,19 @@ Parameters:
     Type: String 
   MembrID1:
     Type: String
-  emailID:
+  emailID1:
     Type: String
   MembrID2:
     Type: String
-
+  emailID2:
+    Type: String
 Resources:
   GuardDutyMember1:
     Type: AWS::GuardDuty::Member
     Properties: 
       DetectorId: !Ref DetectId
       MemberId: !Ref MembrID1
-      Email: !Ref emailID
+      Email: !Ref emailID1
       Message: "Invitation to join GuardDuty"
       Status: "Invited"
   GuardDutyMember2:
@@ -23,6 +24,6 @@ Resources:
     Properties: 
       DetectorId: !Ref DetectId
       MemberId: !Ref MembrID2
-      Email: !Ref emailID
+      Email: !Ref emailID2
       Message: "Invitation to join GuardDuty"
       Status: "Invited"
