@@ -2,17 +2,27 @@ AWSTemplateFormatVersion: '2010-09-09'
 Parameters:
   DetectId:
     Type: String 
-  MembrID:
+  MembrID1:
     Type: String
   emailID:
     Type: String
+  MembrID2:
+    Type: String
 
 Resources:
-  GuardDutyMember:
+  GuardDutyMember1:
     Type: AWS::GuardDuty::Member
     Properties: 
       DetectorId: !Ref DetectId
-      MemberId: !Ref MembrID
+      MemberId: !Ref MembrID1
+      Email: !Ref emailID
+      Message: "Invitation to join GuardDuty"
+      Status: "Invited"
+  GuardDutyMember2:
+    Type: AWS::GuardDuty::Member
+    Properties: 
+      DetectorId: !Ref DetectId
+      MemberId: !Ref MembrID2
       Email: !Ref emailID
       Message: "Invitation to join GuardDuty"
       Status: "Invited"

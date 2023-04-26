@@ -6,7 +6,7 @@ Resources:
       Name: My-waf
       Scope: CLOUDFRONT
       DefaultAction:
-        Block: {}
+        Allow: {}
       VisibilityConfig:
         CloudWatchMetricsEnabled: true
         MetricName: my-waf-metric
