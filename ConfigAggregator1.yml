@@ -1,0 +1,16 @@
+Resources: 
+  ConfigurationAggregator:
+    Type: 'AWS::Config::ConfigurationAggregator'
+    Properties:
+      AccountAggregationSources:
+      - AccountIds:
+          - '462592154481'
+          - '624881849477'
+          - '948376676580'
+        AwsRegions:
+          - ap-south-east-1
+          - us-east-1
+        AllAwsRegions: false
+      ConfigurationAggregatorName: MyConfigurationAggregator
+              
+ 

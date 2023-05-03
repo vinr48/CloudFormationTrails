@@ -1,0 +1,26 @@
+Resources:
+  ConfigurationAggregator:
+    Type: 'AWS::Config::ConfigurationAggregator'
+    Properties:
+        OrganizationAggregationSource:
+            RoleArn: !GetAtt MyRole.Arn
+            AwsRegions:
+                - ap-southeast-1
+            AllAwsRegions: false
+        ConfigurationAggregatorName: MyConfigurationAggregator
+              
+  MyRole:
+    Type: AWS::IAM::Role
+    Properties: 
+        ManagedPolicyArns: 
+            - arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations
+        Path: "/service-role/"
+        AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Principal:
+                    Service:
+                        - config.amazonaws.com
+                Action:
+                    - 'sts:AssumeRole'
