@@ -1,0 +1,5 @@
+Resources:
+    MyCloudFormationCanaryPack:
+        Type: AWS::Config::ConformancePack
+        Properties:
+          ConformancePackName: Operational Best Practices for AWS Well-Architected Framework Security Pillar
