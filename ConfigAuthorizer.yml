@@ -1,0 +1,5 @@
+AggregationAuthorization: 
+  Type: "AWS::Config::AggregationAuthorization"
+  Properties: 
+    AuthorizedAccountId: 948376676580
+    AuthorizedAwsRegion: ap-southeast-1

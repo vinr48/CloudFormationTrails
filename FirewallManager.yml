@@ -1,0 +1,31 @@
+Resources:
+  MyFirewallManager:
+    Type: AWS::FMS::Policy
+    Properties:
+      ExcludeResourceTags: false
+      DeleteAllPolicyResources: false
+      IncludeMap:
+        ACCOUNT:
+          - "462592154481"
+          - "624881849477"
+          - "948376676580"
+      PolicyDescription: "Policy to push WebACL to WAFv2 on cloudfront"
+      PolicyName: MYWAFWebACL
+      RemediationEnabled: false
+      ResourcesCleanup: false
+      ResourceType: AWS::CloudFront::Distribution
+      SecurityServicePolicyData:
+        Type: WAFV2
+        ManagedServiceData: "WAFV2"
+        DefaultAction:
+          Allow: {}
+        WAFV2:
+          Rules:
+            - Name: AWSManagedRulesCommonRuleSet
+              Priority: 1
+              OverrideAction:
+                Count: {}
+              Statement:
+                ManagedRuleGroupStatement:
+                  VendorName: AWS
+                  Name: AWSManagedRulesCommonRuleSet

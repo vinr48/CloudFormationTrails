@@ -1,0 +1,13 @@
+Resources:
+  MyFirewallManager:
+    Type: 'AWS::FMS::Policy'
+    Properties:
+      PolicyName: my-firewall-policy
+      ExcludeResourceTags: false
+      RemediationEnabled: true
+      ResourceType: AWS::CloudFront::Distribution
+      SecurityServicePolicyData:
+        Type: WAFV2
+        ManagedServiceData: "{\"type\":\"WAFV2\",\"preProcessRuleGroups\":[{\"ruleGroupArn\":null,\"overrideAction\":{\"type\":\"COUNT\"},\"managedRuleGroupIdentifier\":{\"version\":null,\"vendorName\":\"AWS\",\"managedRuleGroupName\":\"AWSManagedRulesAmazonIpReputationList\"},\"ruleGroupType\":\"ManagedRuleGroup\",\"ruleGroupArn\":null,\"overrideAction\":{\"type\":\"COUNT\"},\"managedRuleGroupIdentifier\":{\"version\":null,\"vendorName\":\"AWS\",\"managedRuleGroupName\":\"AWSManagedRulesCommonRuleSet\"},\"ruleGroupType\":\"ManagedRuleGroup\"],\"postProcessRuleGroups\":[],\"defaultAction\":{\"type\":\"ALLOW\"}}"
+  
+      
