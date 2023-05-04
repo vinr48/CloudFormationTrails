@@ -7,9 +7,9 @@ Parameters:
     Description: AWS Account ID of Aggregator
     Type: String
 
-
-AggregationAuthorization: 
-  Type: "AWS::Config::AggregationAuthorization"
-  Properties: 
-    AuthorizedAccountId: !Ref AggAccount
-    AuthorizedAwsRegion: !Ref AggRegion
+Resources:
+    MyAggregationAuthorization: 
+      Type: "AWS::Config::AggregationAuthorization"
+      Properties: 
+        AuthorizedAccountId: !Ref AggAccount
+        AuthorizedAwsRegion: !Ref AggRegion
