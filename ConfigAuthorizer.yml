@@ -1,5 +1,15 @@
+Parameters:
+  AggRegion:
+    Description: AWS Region for Aggregator
+    Type: String
+
+  AggAccount:
+    Description: AWS Account ID of Aggregator
+    Type: String
+
+
 AggregationAuthorization: 
   Type: "AWS::Config::AggregationAuthorization"
   Properties: 
-    AuthorizedAccountId: 948376676580
-    AuthorizedAwsRegion: ap-southeast-1
+    AuthorizedAccountId: !Ref AggAccount
+    AuthorizedAwsRegion: !Ref AggRegion
