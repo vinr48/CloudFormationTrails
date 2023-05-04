@@ -5,7 +5,7 @@ Parameters:
 
   AggAccount:
     Description: AWS Account ID of Aggregator
-    Type: String
+    Type: List<Number>
 
 Resources:
     MyAggregationAuthorization: 
