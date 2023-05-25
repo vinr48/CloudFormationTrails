@@ -1,0 +1,7 @@
+Resources:
+  GenoVicSNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      ContentBasedDeduplication: true
+      DisplayName: TestGenoVicSNSTopic
+      SignatureVersion: 2
