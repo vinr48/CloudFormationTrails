@@ -1,5 +1,13 @@
+Parameters:
+  S3URI:
+    Type: String 
+
 Resources:
-    MyCloudFormationCanaryPack:
+    CloudFormationCanaryPack:
         Type: AWS::Config::ConformancePack
         Properties:
-          ConformancePackName: Operational Best Practices for AWS Well-Architected Framework Security Pillar
+          ConformancePackName: TRY1PACK
+          TemplateS3Uri: !Ref S3URI
+            
+
+    

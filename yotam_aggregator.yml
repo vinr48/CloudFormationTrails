@@ -1,0 +1,23 @@
+{
+    "Resources": {
+        "ConfigurationAggregator": {
+            "Type": "AWS::Config::ConfigurationAggregator",
+            "Properties": {
+                "AccountAggregationSources": [
+                    {
+                        "AccountIds": [
+                            "948376676580",
+                            "624881849477",
+                            "462592154481"
+                        ],
+                        "AwsRegions": [
+                            "ap-southeast-1"
+                        ],
+                        "AllAwsRegions": false
+                    }
+                ],
+                "ConfigurationAggregatorName": "MyConfigurationAggregator"
+            }
+        }
+    }
+}

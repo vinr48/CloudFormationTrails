@@ -1,0 +1,6 @@
+Resources:
+  GenoVicEventBus:
+    Type: AWS::Events::EventBus
+    Properties: 
+      Name: GenoVicEventBus
+    

@@ -1,0 +1,10 @@
+Parameters:
+  S3BucketURI:
+    Type: String
+
+Resources:
+  OrgConformancePack1:
+    Type: AWS::Config::OrganizationConformancePack
+    Properties: 
+        OrganizationConformancePackName: TRY1
+        TemplateS3Uri: !Ref S3BucketURI

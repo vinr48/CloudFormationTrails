@@ -1,0 +1,73 @@
+Parameters:
+  DeliveryStreamName:
+    Type: String
+    Default: centralised-logs
+  S3BucketArn:
+    Type: String
+
+Resources:
+  Firehose:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      DeliveryStreamName: !Ref DeliveryStreamName
+      DeliveryStreamType: DirectPut
+      HttpEndpointDestinationConfiguration:
+        RoleARN: !GetAtt FirehoseRole.Arn
+        BufferingHints:
+          IntervalInSeconds: 60
+          SizeInMBs: 10
+        EndpointConfiguration:
+          Name: example
+          Url: https://example.com
+        RequestConfiguration:
+          ContentEncoding: GZIP
+        RetryOptions:
+          DurationInSeconds: 60
+        S3Configuration:
+          BucketARN: !Ref S3BucketArn
+          RoleARN: !GetAtt FirehoseRole.Arn
+          Prefix: logs/!{timestamp:yyyy/MM/dd}/
+          ErrorOutputPrefix: errors/!{firehose:error-output-type}/!{timestamp:yyyy/MM/dd}/
+          CompressionFormat: GZIP
+          BufferingHints:
+            IntervalInSeconds: 60
+            SizeInMBs: 128
+
+  FirehoseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: firehose.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: !Ref AWS::AccountId
+      Policies:
+        - PolicyName: Firehose2S3
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:AbortMultipartUpload
+                  - s3:GetBucketLocation
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:ListBucketMultipartUploads
+                  - s3:PutObject
+                Resource:
+                  - !Ref S3BucketArn
+
+  Bucket:
+    DeletionPolicy: Retain
+    Type: AWS::S3::Bucket
+  
+OutputName: BucketArn
+  Description: LoggingS3Arn
+  Value: !GetAtt  Bucket
+  Export:
+      Name: Bucket ARN
