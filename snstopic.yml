@@ -1,7 +1,13 @@
 Resources:
-  GenoVicSNSTopic:
+  TestSNSTopic:
     Type: AWS::SNS::Topic
     Properties:
       ContentBasedDeduplication: true
-      DisplayName: TestGenoVicSNSTopic
+      DisplayName: TestSNSTopic1
       SignatureVersion: 2
+
+Outputs:
+  TestSNSoutput: 
+    Value: !Ref TestSNSTopic
+    Export:
+      Name: SNStopicArn
