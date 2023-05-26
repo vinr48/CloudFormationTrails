@@ -2,7 +2,6 @@ Resources:
   TestSNSTopic:
     Type: AWS::SNS::Topic
     Properties:
-      ContentBasedDeduplication: true
       DisplayName: TestSNSTopic1
       SignatureVersion: 2
 
