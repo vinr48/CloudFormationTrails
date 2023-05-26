@@ -2,7 +2,7 @@ Resources:
   MyEventRule:
     Type: AWS::Events::Rule
     Properties:
-      EventBusName: !ImportValue EventBusName
+      EventBusName: !ImportValue TestEventBusName
       EventPattern:
         source:
           - aws.securityhub
@@ -20,4 +20,4 @@ Resources:
       State: ENABLED
       Targets:
         - Id: DeloitteEmailSNSTopic
-          Arn: !ImportValue TestSNSoutput
+          Arn: !ImportValue SNStopicArn
