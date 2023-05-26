@@ -1,5 +1,5 @@
 Resources:
-  EventRule0:
+  MyEventRule:
     Type: AWS::Events::Rule
     Properties:
       EventBusName: default
@@ -16,8 +16,8 @@ Resources:
               Label:
                 - HIGH
                 - CRITICAL
-      Name: RuleA
+      Name: CFTestRule
       State: ENABLED
       Targets:
-        - Id: Id603c54c4-06eb-45ad-87b0-99d55dc5c8f4
-          Arn: arn:aws:sns:ap-southeast-1:948376676580:DeloitteEmailSNSTopic
+        - Id: DeloitteEmailSNSTopic
+          Arn: !ImportValue TestSNSoutput
