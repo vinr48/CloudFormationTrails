@@ -10,12 +10,28 @@ Resources:
       DisplayName: TestSNSTopic1
       SignatureVersion: 2
   
+  TestSnsPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: PublsihEvents
+          Effect: Allow
+          Principal:
+            Service: events.amazonaws.com
+          Action: sns:Publish
+          Resource: "*"
+      Topics: 
+      - !Ref TestSNSTopic
+  
   TestSNSSubscription:
     Type: AWS::SNS::Subscription
     Properties:
          TopicArn: !Ref TestSNSTopic
          Protocol: email
          Endpoint: !Ref MyTestEndpoint
+              
 
 Outputs:
   TestSNSoutput: 
