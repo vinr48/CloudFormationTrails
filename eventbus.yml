@@ -1,6 +1,17 @@
 Resources:
-  GenoVicEventBus:
+  TestEventBus:
     Type: AWS::Events::EventBus
     Properties: 
-      Name: GenoVicEventBus
+      Name: TestEventBus
+
+Outputs:     
+  EventBusName:
+    Description: Name of Event Bus
+    Value: !Ref TestEventBus
+    Export:
+      Name: TestEventBusName
+  EventBusARN:
+    Description: Arn of Event Bus
+    Value: !GetAtt TestEventBus.Arn
+  
     

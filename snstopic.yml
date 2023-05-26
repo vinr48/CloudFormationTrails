@@ -1,12 +1,29 @@
+Parameters:
+  MyTestEndpoint:
+    Type: String
+    Default: vramakrishnan@deloitte.com.au
+
 Resources:
   TestSNSTopic:
     Type: AWS::SNS::Topic
     Properties:
       DisplayName: TestSNSTopic1
       SignatureVersion: 2
+  
+  TestSNSSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+         TopicArn: !Ref TestSNSTopic
+         Protocol: email
+         Endpoint: !Ref MyTestEndpoint
 
 Outputs:
   TestSNSoutput: 
     Value: !Ref TestSNSTopic
     Export:
       Name: SNStopicArn
+  
+  TestSNSSubscriptionArnOutput:
+    Value: !Ref TestSNSSubscription
+    Export:
+      Name: SNSTopicSubscriptionARN
