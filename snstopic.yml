@@ -9,6 +9,7 @@ Resources:
     Properties:
       DisplayName: TestSNSTopic1
       SignatureVersion: 2
+      TopicName: TestSNSPolicy
   
   TestSnsPolicy:
     Type: AWS::SNS::TopicPolicy
@@ -16,7 +17,7 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Sid: PublsihEvents
+        - Sid: PublishEvents
           Effect: Allow
           Principal:
             Service: events.amazonaws.com

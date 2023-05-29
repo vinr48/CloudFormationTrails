@@ -2,7 +2,7 @@ Resources:
   MyEventRule:
     Type: AWS::Events::Rule
     Properties:
-      EventBusName: !ImportValue TestEventBusName
+      EventBusName: default
       EventPattern:
         source:
           - aws.securityhub
