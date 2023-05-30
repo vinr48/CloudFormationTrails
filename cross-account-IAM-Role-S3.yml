@@ -1,0 +1,63 @@
+Resources: 
+  CrossAccountRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal: 
+            Service: 
+             - s3.amazonaws.com
+          Action: 
+            - sts:AssumeRole
+      Description: Role for cross account access
+      Path: /
+      Policies: 
+        - PolicyName: S3CrossAccountReplicationPolicy
+          PolicyDocument: 
+            Version: '2012-10-17'
+            Statement: 
+            - Effect: Allow 
+              Action: 
+                -  s3:GetObjectVersionForReplication
+                -  s3:GetObjectVersionAcl
+              Resource: 
+                - arn:aws:s3::sourcebucket
+            - Effect: Allow 
+              Action: 
+                - s3:ListBucket
+                - s3:GetReplicationConfiguration
+              Resource: 
+                - arn:aws:s3::sourcebucket
+            - Effect: Allow 
+              Action: 
+                - s3:ReplicateObject
+                - s3:ReplicateDelete
+                - s3:ReplicateTags
+                - s3:GetObjectVersionTagging
+                - s3:ObjectOwnerOverrideToBucketOwner
+              Resource: 
+                - arn:aws:s3::destinationbucket 
+      RoleName: S3CrossAccountReplicationRole
+
+  SourceS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: s3sourceaccountbucketvinr
+      VersioningConfiguration:
+           Status: Enabled
+      ReplicationConfiguration: 
+        Role: !GetAtt  CrossAccountRole.Arn
+        Rules: 
+          - Destination: 
+              Bucket: !ImportValue DestinationBucketArn
+            Prefix: ""
+            Status: Enabled 
+
+Outputs:
+     BucketArnOutput:
+      Description: Arn of source bucket 
+      Value: !GetAtt SourceS3Bucket.Arn 
+      Export:
+          Name: SourceS3BucketArn 
