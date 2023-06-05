@@ -1,0 +1,26 @@
+Parameters:
+  destinationS3Arn:
+    Type: String
+  destinationAccountID: 
+    Type: String
+
+
+Resources:
+  SourceS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: s3sourceaccountbucketvinrv2
+      VersioningConfiguration:
+        Status: Enabled
+      ReplicationConfiguration: 
+        Role: !ImportValue ExportofCrossAccountRoleArnv2
+        Rules: 
+        - Destination: 
+            Bucket: !Ref destinationS3Arn
+            Account: !Ref destinationAccountID
+            AccessControlTranslation:
+                 Owner: Destination
+          DeleteMarkerReplication: 
+              Status: Disabled
+          Prefix: ""
+          Status: Enabled

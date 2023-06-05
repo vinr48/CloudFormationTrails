@@ -12,6 +12,7 @@ Resources:
           findings:
             ProductArn:
               - arn:aws:securityhub:ap-southeast-1::product/aws/guardduty
+              - arn:aws:securityhub:ap-southeast-1::product/aws/inspector
             Severity:
               Label:
                 - HIGH

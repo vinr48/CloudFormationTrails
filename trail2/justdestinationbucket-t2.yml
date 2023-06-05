@@ -1,0 +1,14 @@
+Resources:
+  DestinationS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: s3destinationaccountbucketvinrv2
+      VersioningConfiguration:
+            Status: Enabled
+
+Outputs:
+    DestinationS3BucketArn:
+       Description: Arn of Source S3 bucket
+       Value: !GetAtt DestinationS3Bucket.Arn
+       Export:
+         Name: DestinationS3Arnv2

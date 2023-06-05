@@ -1,0 +1,22 @@
+Resources: 
+  SourceS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: s3sourceaccountbucketvinr
+      VersioningConfiguration:
+           Status: Enabled
+      ReplicationConfiguration: 
+        Role: !GetAtt CrossAccountRole.Arn
+        Rules: 
+          - Destination: 
+              Bucket: !ImportValue DestinationBucketArn
+            Prefix: ""
+            Status: Enabled 
+
+Outputs:
+     BucketArnOutput:
+      Description: Arn of source bucket 
+      Value: !GetAtt SourceS3Bucket.Arn 
+      Export:
+          Name: ExportofSourceS3BucketArn 
+     

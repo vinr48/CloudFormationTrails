@@ -20,32 +20,21 @@ Resources:
       Description: Role for cross account access
       Path: /
       Policies: 
-        - PolicyName: S3CrossAccountReplicationPolicy
+        - PolicyName: S3CrossAccountReplicationPolicyv2
           PolicyDocument: 
             Version: '2012-10-17'
             Statement: 
             - Effect: Allow 
               Action: 
-                -  s3:GetObjectVersionForReplication
-                -  s3:GetObjectVersionAcl
+                -  s3:*
               Resource: 
                 - !Ref sources3Arn
             - Effect: Allow 
               Action: 
-                - s3:ListBucket
-                - s3:GetReplicationConfiguration
-              Resource: 
-                - !Ref sources3Arn
-            - Effect: Allow 
-              Action: 
-                - s3:ReplicateObject
-                - s3:ReplicateDelete
-                - s3:ReplicateTags
-                - s3:GetObjectVersionTagging
-                - s3:ObjectOwnerOverrideToBucketOwner
+                - s3:*
               Resource: 
                 - !Ref destinationS3Arn 
-      RoleName: S3CrossAccountReplicationRole
+      RoleName: S3CrossAccountReplicationRoleV2
 
 
 Outputs:
@@ -53,4 +42,4 @@ Outputs:
       Description: Arn of the IAM role 
       Value: !GetAtt CrossAccountRole.Arn 
       Export: 
-          Name: ExportofCrossAccountRoleArn 
+          Name: ExportofCrossAccountRoleArnv2

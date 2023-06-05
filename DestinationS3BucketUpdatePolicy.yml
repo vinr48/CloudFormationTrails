@@ -1,0 +1,59 @@
+Parameters:
+  SourceAccountNumber:
+    Type: String
+  CrossAccountRoleArn:
+    Type: String
+
+Resources:
+  DestinationS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: s3destinationaccountbucketvinr
+      VersioningConfiguration:
+        Status: Enabled
+
+  DestinationBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref DestinationS3Bucket
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Ref CrossAccountRoleArn
+            Action:
+              - s3:ReplicateObject
+              - s3:ReplicateDelete
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref DestinationS3Bucket
+                - "/*"
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${SourceAccountNumber}:root"
+            Action:
+              - s3:ObjectOwnerOverrideToBucketOwner
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref DestinationS3Bucket
+                - "/*"
+          - Effect: Allow
+            Principal:
+              AWS: !Ref CrossAccountRoleArn
+            Action:
+              - s3:GetBucketVersioning
+              - s3:PutBucketVersioning
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref DestinationS3Bucket
+
+Outputs:
+  DestinationBucketArn:
+    Description: Arn of destination bucket
+    Value: !GetAtt DestinationS3Bucket.Arn
+    Export:
+      Name: ArnofS3BucketDestination

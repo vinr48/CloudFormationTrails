@@ -1,0 +1,14 @@
+Resources:
+  SourceS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: s3sourceaccountbucketvinr
+      VersioningConfiguration:
+            Status: Enabled
+
+Outputs:
+    SourceS3BucketArn:
+       Description: Arn of Source S3 bucket
+       Value: !GetAtt SourceS3Bucket.Arn
+       Export:
+         Name: SourceS3Arn

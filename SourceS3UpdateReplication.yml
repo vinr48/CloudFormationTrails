@@ -1,0 +1,19 @@
+Parameters:
+  destinationS3Arn:
+    Type: String
+
+
+Resources:
+  SourceS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: s3sourceaccountbucketvinr
+      VersioningConfiguration:
+        Status: Enabled
+      ReplicationConfiguration: 
+        Role: !ImportValue ExportofCrossAccountRoleArn
+        Rules: 
+        - Destination: 
+            Bucket: !Ref destinationS3Arn
+          Prefix: ""
+          Status: Enabled 
