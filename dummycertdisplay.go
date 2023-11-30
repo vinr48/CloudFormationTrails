@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 // Hardcoded dummy private certificate for testing (replace with real certificate in production)
-privateKey := -----BEGIN CERTIFICATE-----
+privateKey := "-----BEGIN CERTIFICATE-----
 MIICoTCCAYkCAgPoMA0GCSqGSIb3DQEBCwUAMCExHzAdBgNVBAMTFkR1bW15IENlcnRp
 ZmljYXRlIENlcnQwHhcNMTkwMTIzMDAwMDAwWhcNMjAwMTIzMTIwMDAwWjAhMR8wHQYD
 VQQDExZEaXNjb3JkIFNhbXBsZSBkZXYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
@@ -19,7 +19,7 @@ NN3Z95tU8M5P5UQV55RGEYKMR/6aXZDNWn9/T4it87U2wH5RD2Qv1lC6uXWJ3BqjY9Tn
 5pl1oLtkN9NW72cm0lRFiNdpSNroOrFJiMYepdbq/B9zYFr+lRn4+4jw/hj28o6hKJoQ
 BZOuOsQOMtXx2jThMJcU8esosW/4aT0x0rgosnIN3UpX0B2pVsYR0Bp82dfD1eqFyvIU
 eh49X/7tJN3e/0XrTLUfNB5Nel8uEaJt0kqM0p+oMuC4tBs=
------END CERTIFICATE-----
+-----END CERTIFICATE-----"
 
 	fmt.Println("Dummy Private Key:")
 	fmt.Println(privateKey)
