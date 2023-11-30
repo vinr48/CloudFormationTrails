@@ -1,0 +1,26 @@
+package main
+
+import "fmt"
+
+func main() {
+// Hardcoded dummy private certificate for testing (replace with real certificate in production)
+privateKey := -----BEGIN CERTIFICATE-----
+MIICoTCCAYkCAgPoMA0GCSqGSIb3DQEBCwUAMCExHzAdBgNVBAMTFkR1bW15IENlcnRp
+ZmljYXRlIENlcnQwHhcNMTkwMTIzMDAwMDAwWhcNMjAwMTIzMTIwMDAwWjAhMR8wHQYD
+VQQDExZEaXNjb3JkIFNhbXBsZSBkZXYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQDAEgfIzWB6lBFxQ5JwU93itDY5T1Ifpx6iH9m0arZB4rtKORvojgBfNOf9nCeB
+ecBhw7jdr5p1NRspSGUd9Kkq/wix7GLOxYvXvGIFhZTf1/ps8UEtvokLRU1t9QK9EvFE
+aVpQqgAz5DnIi5cLjrZKPMrNUvB7WpN5c/jCb+5eYh8vudP/F2tO6QnkiLZRU9g42vCI
+1PyLZg3V/xiEN50nhYzHbw/H8KDFzItp2QXckT6QYAfhe74goUiB6MvMlnZfOfklMk5R
+m7TT0PvQZRj9P8b2BFFuHdbxsnxQ13aGtIdBq0xw+0BCCmivgYwONqgOs8T+cxrQkldF
+gAC3TJtZAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAD5gTMJu6/y+el3GndtLopCmTsVy
+NN3Z95tU8M5P5UQV55RGEYKMR/6aXZDNWn9/T4it87U2wH5RD2Qv1lC6uXWJ3BqjY9Tn
++jJvF10DOmhTo+vc61rJ4SlK+QPCkygoRHkEaCDJlZnZvZs3qoqPrfujfR52bRp2LiQ+
+5pl1oLtkN9NW72cm0lRFiNdpSNroOrFJiMYepdbq/B9zYFr+lRn4+4jw/hj28o6hKJoQ
+BZOuOsQOMtXx2jThMJcU8esosW/4aT0x0rgosnIN3UpX0B2pVsYR0Bp82dfD1eqFyvIU
+eh49X/7tJN3e/0XrTLUfNB5Nel8uEaJt0kqM0p+oMuC4tBs=
+-----END CERTIFICATE-----
+
+	fmt.Println("Dummy Private Key:")
+	fmt.Println(privateKey)
+}
