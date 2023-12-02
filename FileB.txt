@@ -1,1 +1,2 @@
 This is file B
+making changes to fileB AZ400 course
